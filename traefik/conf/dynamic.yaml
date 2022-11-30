@@ -1,0 +1,22 @@
+http:
+  routers:
+    backend:
+      rule: "PathPrefix(`/`)"
+      service: backend
+    influxdb:
+      rule: "PathPrefix(`/influxdb`)"
+      service: influxdb
+  services:
+    backend:
+      loadBalancer:
+        servers:
+        - url: "http://backend:8000"
+    influxdb:
+      loadBalancer:
+        servers:
+        - url: "http://influxdb:8086"
+
+tls:
+  certificates:
+    - certFile: /traefik/localhost/cert.pem
+      keyFile: /traefik/localhost/key.pem

@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  influxdb:
+    image: influxdb:latest
+    volumes:
+      - ./influxdb:/var/lib/influxdb2:rw
+    ports:
+      - "8086:8086"
+
+  backend:
+    build:
+      args:
+        USER: ${USER}
+      context: ./backend
+      target: ${APP_BUILD_TARGET:-local}
+    image: ${APP_IMAGE_NAME:-moralmeter}:${APP_IMAGE_TAG:-latest}
+    environment:
+      - DEBUG
+      - CONFIGURATION
+      - INFLUXDB_BUCKET
+      - INFLUXDB_ORG
+      - INFLUXDB_TOKEN
+      - INFLUXDB_URL
+      - LETSENCRYPT_HOST
+      - LETSENCRYPT_MAIL
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    user: ${USER}
+    volumes:
+      - ./backend/:/app
+
+  traefik:
+    image: traefik:v2.6
+    depends_on:
+      - backend
+    volumes:
+      - ./traefik/:/traefik/:ro
+    command:
+      - "--configFile=/traefik/conf/static.yaml"
+    ports:
+      - "${LOCAL_HTTPS_PORT:-8443}:8443"
+      - "${TRAEFIK_DASHBOARD_PORT:-8080}:8080"
+
+
+volumes:
+  influxdb2:

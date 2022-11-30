@@ -1,0 +1,14 @@
+# directories
+.coverages
+.devcontainer
+.git
+.mypy_cache
+.pytest_cache
+.venv
+.vscode
+*.bak
+**/lost+found
+*/__pycache__
+htmlcov
+k8s
+public

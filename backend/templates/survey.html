@@ -1,0 +1,67 @@
+<html>
+<title>Moral meter</title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<style>
+    @import 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css';
+</style>
+<body>
+    <div id="app">
+        <h1>!{ title }:</h1>
+        <form v-on:submit.prevent="submitForm">
+            <div v-for="survey in surveys">
+                <input v-model="survey.vote" type="number">
+                <label>!{ survey.name } </label>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            delimiters: ['!{', '}'],
+            mounted() {
+                axios
+                    .get("/api/survey/")
+                    .then(response => (this.surveys = response.data));
+            },
+            data: {
+                title: "Please rate your sprint experience for the following",
+                surveys: [],
+                surveys_data: [],
+            },
+            computed: {
+                surveysData : function() {
+                    for (let i = 0; i < this.surveys.length; i++) {
+                        this.surveys_data.push(
+                            { 
+                                "id": this.surveys[i]["id"], 
+                                "vote": this.surveys[i]["vote"]
+                            }
+                        );
+                    };
+                    return this.surveys_data
+                }
+            },
+            methods: {
+                submitForm(){
+                        axios.post('/api/survey/vote/', this.surveysData)
+                        .then((response) => {
+                            //Perform Success Action
+                            alert(response.data["detail"]);
+                        })
+                        .catch((error) => {
+                            // error.response.status Check status code
+                            error.response
+                        }).finally((res) => {
+                            //Perform action in always
+                        });
+                    }
+                }
+            });
+    </script>
+</body>
+

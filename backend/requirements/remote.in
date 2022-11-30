@@ -1,0 +1,4 @@
+# pip-compile --output-file remote.txt remote.in
+-r common.in
+
+gunicorn~=20.1.0
