@@ -1,10 +1,9 @@
 """Define main morale meter."""
 
-
-from fastapi import FastAPI
-
 from app.api import root, survey
 from app.core import config
+from fastapi import FastAPI
+from starlette.staticfiles import StaticFiles
 
 app = FastAPI(
     title="Morale Meter",
@@ -19,3 +18,5 @@ app = FastAPI(
 
 app.include_router(root.router)
 app.include_router(survey.router)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
