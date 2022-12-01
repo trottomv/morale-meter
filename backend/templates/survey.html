@@ -69,7 +69,7 @@
                                 <input v-model="survey.vote" type="range" min="1" max="5" class="form-range" id="surveyRange">
                             </div>
                             <div class="form-group d-grid gap-2 col-6 mx-auto pt-5">
-                                <button class="btn btn-primary btn-lg">Send your feeling experience</button>
+                                <button class="btn btn-primary btn-lg" :disabled="hasVoted">Send your feeling experience</button>
                             </div>
                         </form>
                     
@@ -102,6 +102,7 @@
                     title: "Please rate your sprint experience for the following",
                     surveys: [],
                     surveys_data: [],
+                    hasVoted: false,
                     gifs: [
                         {
                             "postid": "12803923", 
@@ -171,6 +172,7 @@
                             .then((response) => {
                                 //Perform Success Action
                                 alert(response.data["detail"]);
+                                this.hasVoted = true;
                             })
                             .catch((error) => {
                                 // error.response.status Check status code
