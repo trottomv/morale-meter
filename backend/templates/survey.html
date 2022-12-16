@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Moral Meter - 20tab</title>
+        <link rel="icon" type="image/x-icon" href="/static/assets/favicon.ico" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,600;1,600&amp;display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,300;0,500;0,600;0,700;1,300;1,500;1,600;1,700&amp;display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,400;1,400&amp;display=swap" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="/static/css/styles.css" rel="stylesheet" />
+        <!-- Vuejs -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- Axios -->
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body id="page-top">
+        <div id="app">
+            <!-- Navigation-->
+            <nav class="navbar navbar-expand-lg navbar-light fixed-top shadow-sm" id="mainNav">
+                <div class="container px-5">
+                    <a class="navbar-brand fw-bold" href="">Moral Meter - 20tab</a>
+                </div>
+            </nav>
+            <!-- Mashead header-->
+            <header class="masthead">
+                <div class="container px-5">
+                    <div class="row gx-5 align-items-center">
+                        <div class="col-lg-6">
+                            <!-- Mashead text and app badges-->
+                            <div class="mb-5 mb-lg-0 text-center text-lg-start">
+                                <h1 class="display-1 lh-1 mb-3">Rate your feeling experience.</h1>
+                                <p class="lead fw-normal text-muted mb-5">This is a safe place where you can give an anonymous feedback about how you feel.</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <!-- Masthead device mockup feature-->
+                            <div class="masthead-device-mockup">
+                                <div class="tenor-gif-embed" v-bind:data-postid="selectedGif.postid" data-share-method="host" data-aspect-ratio="1.8" data-width="100%"><a v-bind:href="selectedGif.url"></a></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- Quote/testimonial aside-->
+            <aside class="text-center bg-gradient-primary-to-secondary">
+                <div class="container px-5">
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-xl-8">
+                            <div class="h2 fs-1 text-white mb-4">The following questions address how you feel about your job in your current team or group of colleagues.</div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <!-- App features section-->
+            <section id="features">
+                <div class="container px-5">
+                    <div class="row gx-5 align-items-center">
+                        <form v-on:submit.prevent="submitForm">
+                            <div v-for="survey in surveys" class="pt-4">
+                                <label for="surveyRange" class="form-label fs-3">!{ survey.name }</label>
+                                <input v-model="survey.vote" type="range" min="1" max="5" class="form-range" id="surveyRange">
+                            </div>
+                            <div class="form-group d-grid gap-2 col-6 mx-auto pt-5">
+                                <button class="btn btn-primary btn-lg" :disabled="hasVoted">Send your feeling experience</button>
+                            </div>
+                        </form>
+                    
+                    </div>
+                </div>
+            </section>
+            <!-- Footer-->
+            <footer class="bg-black text-center py-5">
+                <div class="container px-5">
+                    <div class="text-white-50 small">
+                        <div class="mb-2">Powered by <a href="https://www.20tab.com" target="_blank">20tab</a> &copy; !{ currentYear }.</div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/static/js/scripts.js"></script>
+        <script>
+            new Vue({
+                el: "#app",
+                delimiters: ['!{', '}'],
+                mounted() {
+                    axios
+                        .get("/api/survey/")
+                        .then(response => (this.surveys = response.data));
+                },
+                data: {
+                    title: "Please rate your sprint experience for the following",
+                    surveys: [],
+                    surveys_data: [],
+                    hasVoted: false,
+                    gifs: [
+                        {
+                            "postid": "12803923", 
+                            "url": "https://tenor.com/view/this-is-fine-it-crowd-office-space-burning-office-gif-12803923"
+                        },
+                        {
+                            "postid": "12483832", 
+                            "url": "https://tenor.com/view/it-crowd-brilliant-awesome-great-gif-12483832"
+                        },
+                        {
+                            "postid": "24919016", 
+                            "url": "https://tenor.com/view/it-crowd-denholm-reynholm-chris-morris-clapping-gif-24919016"
+                        },
+                        {
+                            "postid": "4711577", 
+                            "url": "https://tenor.com/view/it-crowd-chris-o-dowd-roy-have-you-tried-turning-it-off-and-on-again-off-gif-4711577"
+                        },
+                        {
+                            "postid": "22036541", 
+                            "url": "https://tenor.com/view/it-crowd-roy-and-moss-roy-moss-fistbump-gif-22036541"
+                        },
+                        {
+                            "postid": "14859609", 
+                            "url": "https://tenor.com/view/tv-shows-the-it-crowd-computer-angry-tantrum-gif-14859609"
+                        },
+                        {
+                            "postid": "17043026", 
+                            "url": "https://tenor.com/view/it-crowd-people-bastards-pippetto-funny-as-hell-gif-17043026"
+                        },
+                        {
+                            "postid": "15210949", 
+                            "url": "https://tenor.com/view/the-it-crowd-moss-the-it-crowd-the-it-crowd-fire-moss-the-it-crowd-fire-richard-ayoade-gif-15210949"
+                        },
+                        {
+                            "postid": "7509434", 
+                            "url": "https://tenor.com/view/clapping-it-crowd-chris-o-dowd-richard-ayoade-applause-gif-7509434"
+                        },
+                        {
+                            "postid": "14763596", 
+                            "url": "https://tenor.com/view/it-crowd-team-denholm-reynholm-team-team-team-it-crowd-gif-14763596"
+                        },
+                    ],
+                },
+                computed: {
+                    selectedGif () {
+                        const idx = Math.floor(Math.random() * this.gifs.length);
+                        return this.gifs[idx]
+                    },
+                    surveysData : function() {
+                        for (let i = 0; i < this.surveys.length; i++) {
+                            this.surveys_data.push(
+                                { 
+                                    "id": this.surveys[i]["id"], 
+                                    "vote": this.surveys[i]["vote"] || "3"
+                                }
+                            );
+                        };
+                        return this.surveys_data
+                    },
+                    currentYear () {
+                        return new Date().getFullYear()
+                    },
+                },
+                methods: {
+                    submitForm(){
+                            axios.post('/api/survey/vote/', this.surveysData)
+                            .then((response) => {
+                                //Perform Success Action
+                                alert(response.data["detail"]);
+                                this.hasVoted = true;
+                            })
+                            .catch((error) => {
+                                // error.response.status Check status code
+                                error.response
+                            }).finally((res) => {
+                                //Perform action in always
+                            });
+                        }
+                    }
+                });
+        </script>
+        <!-- Tenor Gifs -->
+        <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    </body>
+</html>
+
